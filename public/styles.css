@@ -1,3 +1,35 @@
+@import url("reset.css");
+
 body {
-    background-color: aqua;
+    background-color: azure;
 }
+
+header {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.showSec {
+    margin-top: 30px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(0, 700px);
+    justify-content: center;
+    
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    border: solid 1px rgb(82, 150, 98);
+    border-radius: 5px;
+}
+
+.bold {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+

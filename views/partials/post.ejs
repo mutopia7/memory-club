@@ -1,0 +1,6 @@
+<div class="post">
+    <p><span class="bold">Title:</span> <%= post.title %></p>
+    <p><span class="bold">Message:</span> <%= post.content %></p>
+    <p><span class="bold">Author:</span>  <%= post.author %> </p>
+    <p><span class="bold">Time:</span> <%= post.created_at.toISOString().slice(11,19)%> At <%= post.created_at.toISOString().slice(0,10)%> </p>
+</div>

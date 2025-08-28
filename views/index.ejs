@@ -7,6 +7,14 @@
     <title>Memory club</title>
 </head>
 <body>
-    <p>Wellcome to the memoryClub</p>
+    
+    <header>
+        Memory club
+    </header>
+    <main class="showSec">
+        <% posts.forEach(post => { %>
+                <%- include('partials/post.ejs', { post: post }) %>
+        <% }); %>
+    </main>
 </body>
 </html>
