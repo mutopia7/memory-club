@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS posts (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL,
     content TEXT NOT NULL,
+    author VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -29,12 +31,13 @@ VALUES
 ('Admin', 'User', 'admin01', 'hashedpassword3', 'admin')
 ON CONFLICT (username) DO NOTHING;
 
-INSERT INTO posts (user_id, content)
+INSERT INTO posts (user_id, title ,content, author)
 VALUES
-(1, 'سلام! این اولین پست منه 😃'),
-(1, 'hey, this is second post😃'),
-(2, 'من تازه عضو ویژه شدم. خوشحالم اینجام!'),
-(3, 'ادمین اینجاست! قوانین رو رعایت کنید.')
+(1, 'sample', 'hey this is my first post', 'Ali'),
+(1, 'count', 'hey, this is my second post😃', 'Ali'),
+(2, 'emotion','Im happy to be here!', 'Sara'),
+(1, 'first car', 'my first car was bmw', 'Ali'),
+(3, 'first love', 'My first love''s name is hana','Admin')
 ON CONFLICT DO NOTHING;
 
 `;
