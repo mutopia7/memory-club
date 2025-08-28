@@ -1,10 +1,16 @@
 const express = require("express");
 const path = require("node:path");
 const router = require("./routes/router")
+const helmet = require("helmet");
+const populateDb = require("./db/populatedb")
 require("dotenv").config();
 
+populateDb()
 
 const app = express();
+
+app.use(helmet());
+
 
 // set view engine
 app.set("views", path.join(__dirname, "views"));

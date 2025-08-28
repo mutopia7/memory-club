@@ -1,0 +1,80 @@
+==== ./public/styles.css ====
+body {
+    background-color: aqua;
+}==== ./db/populatedb.js ====
+==== ./db/pool.js ====
+const { Pool } = require("pg");
+require("dotenv").config();
+
+let pool;
+
+if (process.env.DATABASE_URL) {
+    pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+    });
+} else {
+    pool = new Pool({
+        host: process.env.HOST,
+        user: process.env.USER,
+        database: process.env.DATABASE,
+        port: process.env.DB_PORT
+    });
+}
+
+module.exports = pool;
+
+==== ./db/queries.js ====
+==== ./controllers/userController.js ====
+==== ./controllers/viewController.js ====
+const indexRender = (req, res) => {
+    res.render("index")
+}
+
+module.exports = {
+    indexRender
+}==== ./views/index.ejs ====
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Memory club</title>
+</head>
+<body>
+    <p>Wellcome to the memoryClub</p>
+</body>
+</html>==== ./routes/router.js ====
+const { Router } = require("express");
+const router = Router();
+const userController = require("../controllers/userController")
+const viewController = require("../controllers/viewController")
+
+router.get("/", viewController.indexRender)
+
+module.exports = router;==== ./app.js ====
+const express = require("express");
+const path = require("node:path");
+const router = require("./routes/router")
+require("dotenv").config();
+
+
+const app = express();
+
+// set view engine
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
+
+// serving Static Assets
+app.use(express.static(path.join(__dirname, "public")))
+
+app.use("/", router)
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Listening on Port ${PORT}`)
+});
