@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
     <title>Memory club</title>
 </head>
+
 <body>
-    
-    <header>
-        Memory club
-        <a href="/sign-up">Sign Up</a>
-    </header>
-    <main class="showSec">
-        <% posts.forEach(post => { %>
+    <% if (currentUser) {%>
+        <header>
+            <h1>WELCOME BACK <%= currentUser.username %>
+            </h1>
+            <a href="/log-out">LOG OUT</a>
+        </header>
+        <main class="showSec">
+            <% posts.forEach(post=> { %>
                 <%- include('partials/post.ejs', { post: post }) %>
-        <% }); %>
-    </main>
+                    <% }); %>
+        </main>
+
+        <% } else { %>
+            <header>
+                Memory club
+                <a href="/sign-up">Sign Up</a>
+                <a href="/log-in">Log in</a>
+            </header>
+            <main class="showSec">
+                <% posts.forEach(post=> { %>
+                    <%- include('partials/post.ejs', { post: post }) %>
+                        <% }); %>
+            </main>
+            <% } %>
 </body>
+
 </html>
