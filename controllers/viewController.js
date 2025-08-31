@@ -5,6 +5,13 @@ async function indexRender(req,res) {
     res.render("index", { posts: posts})
 }
 
+function signUpRender(req,res){
+    res.render("sign-up")
+}
+
+
+
 module.exports = {
-    indexRender
+    indexRender,
+    signUpRender
 }
