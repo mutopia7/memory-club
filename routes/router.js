@@ -4,8 +4,21 @@ const userController = require("../controllers/userController");
 const viewController = require("../controllers/viewController");
 const session = require("express-session");
 const passport = require("../config/passport");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require("../db/pool")
 
-router.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+router.use(session({
+  store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  },
+}));
 router.use(passport.session());
 
 
