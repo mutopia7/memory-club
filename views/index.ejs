@@ -14,14 +14,15 @@
             <h1>WELCOME BACK <%= currentUser.username %>
             </h1>
             <a href="/log-out">LOG OUT</a>
+            <a href="/account">account</a>
         </header>
         <main class="showSec">
             <% posts.forEach(post=> { %>
                 <%- include('partials/post.ejs', { post: post }) %>
                     <% }); %>
         </main>
-        <a href="/create-post">Create Post</a>
-        
+        <a href="/new-memory">Create Post</a>
+
         <% } else { %>
             <header>
                 Memory club

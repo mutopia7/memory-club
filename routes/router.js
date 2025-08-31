@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("../config/passport");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("../db/pool")
+const role = require("../middleware/role")
 
 router.use(session({
   store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
@@ -44,11 +45,16 @@ router.use((req, res, next) => {
 
 // routers
 
-router.get("/", viewController.indexRender)
+router.get("/", viewController.indexRender);
 
-router.get("/sign-up", viewController.signUpRender)
-router.post("/sign-up", userController.signUpPost)
+router.get("/sign-up", viewController.signUpRender);
+router.post("/sign-up", userController.signUpPost);
 
+router.get("/new-memory", role.isAuth, role.isVip, viewController.newMemoryRnder);
+router.post("/new-memory", userController.newMemoryPost);
+
+router.get("/account", viewController.accountRender);
+router.post("/account", userController.changeRolePost);
 
 
 module.exports = router;

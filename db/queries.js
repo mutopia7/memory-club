@@ -9,7 +9,17 @@ async function createUser(firstname, lastname, username, password) {
     await pool.query("INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)", [firstname, lastname, username, password])
 }
 
+async function createPost(user, title, content) {
+    await pool.query("INSERT INTO posts (user_id, title, content, author) VALUES ($1, $2, $3, $4)", [user.id, title, content, user.first_name])    
+}
+
+async function updateUserRole(role, userId) {
+    await pool.query("UPDATE users SET role = $1 WHERE id = $2",[role, userId])
+}
+
 module.exports = {
     getAllPosts,
-    createUser
+    createUser,
+    createPost,
+    updateUserRole
 }

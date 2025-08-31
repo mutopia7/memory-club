@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your account</title>
+</head>
+<body>
+    <form action="/account" method="Post">
+        <label for="role">Change your role:</label>
+        <select name="role" id="role">
+            <option value="normal">Normal (You can see every memory with author's name)</option>
+            <option value="vip">VIP (you can create new memory also)</option>
+            <option value="admin">Admin(You can delete every memory that you want except for the first 5 )</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
