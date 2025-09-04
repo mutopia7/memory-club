@@ -17,7 +17,7 @@ body {
     padding: 20px;
 }
 
-.headLinks{
+.headLinks {
     font-weight: 500;
     font-size: 1.2rem;
     display: flex;
@@ -26,20 +26,20 @@ body {
 
 
 .headLinks a:hover {
-  color: aqua;
+    color: aqua;
 }
 
-.username{
-    color: rgb(47, 91, 91);
+.username {
+    color: rgb(78, 204, 204);
 }
 
-.logo{
+.logo {
     text-align: center;
 }
 
 /* Show sec */
 
-.createBut{
+.createBut {
     background-color: black;
     color: white;
     font-weight: 500;
@@ -47,7 +47,7 @@ body {
     border-radius: 5px;
 }
 
-.createBut:hover{
+.createBut:hover {
     color: aqua;
 }
 
@@ -59,7 +59,7 @@ body {
     gap: 16px;
     grid-template-columns: minmax(0, 700px);
     justify-content: center;
-    
+
 }
 
 .post {
@@ -68,12 +68,54 @@ body {
     padding: 20px 30px;
     border: solid 1px aqua;
     border-radius: 5px;
+
+    /* جلوگیری از بیرون زدن متن */
+    word-wrap: break-word;
+    /* نسخه قدیمی‌تر */
+    overflow-wrap: break-word;
+    /* نسخه مدرن */
+    white-space: normal;
+    /* مطمئن میشه متن می‌شکنه */
 }
 
 .bold {
     font-size: 1.2rem;
     font-weight: 500;
 }
+
+/* form sex */
+
+.formMain {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+    gap: 20px;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    gap: 5px;
+}
+
+.form label {
+    font-weight: 500;
+}
+
+.subBtn {
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
 
 
 /* footer sec */
@@ -90,7 +132,7 @@ body {
 
 
 @media (max-width: 490px) {
-    .header{
+    .header {
         flex-direction: column;
     }
 }

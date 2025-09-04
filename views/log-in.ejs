@@ -17,13 +17,13 @@
       </div>
     </header>
   <main class="formMain">
-    <h1>please log in</h1>
-    <form action="/log-in" method="POST">
+    <h1> Log In</h1>
+    <form action="/log-in" method="POST" class="form">
       <label for="username">Username</label>
-      <input id="username" name="username" placeholder="username" type="text" />
+      <input id="username" name="username" placeholder="Enter your username" type="text" />
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
-      <button type="submit">Log In</button>
+      <input id="password" name="password" type="password" placeholder="Enter your password"/>
+      <button type="submit" class="subBtn">Log In</button>
     </form>
   </main>
   <%- include("partials/footer.ejs") %>

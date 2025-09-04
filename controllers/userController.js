@@ -28,7 +28,8 @@ async function changeRolePost(req, res, next) {
         const role = req.body.role;
         const userId = req.user.id;
         await db.updateUserRole(role, userId);
-        res.send(`your currnet role is ${role}`)
+        req.user.role = role;
+        res.redirect("/account")
     } catch (err) {
         return next(err)
     }

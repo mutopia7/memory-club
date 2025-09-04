@@ -19,7 +19,7 @@ function newMemoryRnder(req, res) {
 }
 
 function accountRender(req, res) {
-    res.render("account")
+    res.render("account", {role: req.user.role})
 }
 
 module.exports = {

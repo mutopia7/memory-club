@@ -10,16 +10,16 @@
   <%- include("partials/header.ejs", {currentUser}) %>
   <main class="formMain">
     <h1>Sign Up</h1>
-    <form action="/sign-up" method="POST">
+    <form action="/sign-up" method="POST" class="form">
       <label for="firstname">First Name</label>
-      <input id="firstname" type="text" name="firstname" placeholder="First Name">
+      <input id="firstname" type="text" name="firstname" placeholder="Enter your first name">
       <label for="lastname">Last Name</label>
-      <input id="lastname" name="lastname" placeholder="Last Name" type="text">
+      <input id="lastname" name="lastname" placeholder="Enter your last name" type="text">
       <label for="username">Username</label>
-      <input id="username" name="username" placeholder="Username" type="text" />
+      <input id="username" name="username" placeholder="Enter your username" type="text" />
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
-      <button type="submit">Sign Up</button>
+      <input id="password" name="password" type="password" placeholder="Enter your password" />
+      <button type="submit" class="subBtn">Sign Up</button>
     </form>
   </main>
   <%- include("partials/footer.ejs") %>
