@@ -9,32 +9,28 @@
 </head>
 
 <body>
-    <% if (currentUser) {%>
-        <header>
-            <h1>WELCOME BACK <%= currentUser.username %>
-            </h1>
-            <a href="/log-out">LOG OUT</a>
-            <a href="/account">account</a>
-        </header>
+    <%- include("partials/header.ejs", {currentUser}) %>
+
+    <% if (currentUser) {%>  
         <main class="showSec">
+            <h1 class="logo">WELCOME BACK <span class="username"> <%= currentUser.username %></span> </h1>
+            <div style="text-align: center;"><a href="/new-memory" class="createBut">Create Post</a></div> 
             <% posts.forEach(post=> { %>
                 <%- include('partials/post.ejs', { post: post }) %>
                     <% }); %>
+        
         </main>
-        <a href="/new-memory">Create Post</a>
+        
 
         <% } else { %>
-            <header>
-                Memory club
-                <a href="/sign-up">Sign Up</a>
-                <a href="/log-in">Log in</a>
-            </header>
             <main class="showSec">
                 <% posts.forEach(post=> { %>
                     <%- include('partials/post.ejs', { post: post }) %>
                         <% }); %>
             </main>
             <% } %>
+    
+    <%- include("partials/footer.ejs") %>
 </body>
 
 </html>

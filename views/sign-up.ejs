@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
   <title>Sign Up</title>
 </head>
 <body>
-  <h1>Sign Up</h1>
-  <form action="/sign-up" method="POST">
-    <label for="firstname">First Name</label>
-    <input id="firstname" type="text" name="firstname" placeholder="First Name">
-    <label for="lastname">Last Name</label>
-    <input id="lastname" name="lastname" placeholder="Last Name" type="text">
-    <label for="username">Username</label>
-    <input id="username" name="username" placeholder="Username" type="text" />
-    <label for="password">Password</label>
-    <input id="password" name="password" type="password" />
-    <button type="submit">Sign Up</button>
-  </form>
+  <%- include("partials/header.ejs", {currentUser}) %>
+  <main class="formMain">
+    <h1>Sign Up</h1>
+    <form action="/sign-up" method="POST">
+      <label for="firstname">First Name</label>
+      <input id="firstname" type="text" name="firstname" placeholder="First Name">
+      <label for="lastname">Last Name</label>
+      <input id="lastname" name="lastname" placeholder="Last Name" type="text">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="Username" type="text" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" />
+      <button type="submit">Sign Up</button>
+    </form>
+  </main>
+  <%- include("partials/footer.ejs") %>
 </body>
 </html>

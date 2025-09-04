@@ -1,18 +1,60 @@
 @import url("reset.css");
 
 body {
-    background-color: azure;
+    background-color: aliceblue;
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
 }
 
-header {
+/* header sec */
+
+.header {
     background-color: black;
     color: white;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
 }
 
+.headLinks{
+    font-weight: 500;
+    font-size: 1.2rem;
+    display: flex;
+    gap: 40px;
+}
+
+
+.headLinks a:hover {
+  color: aqua;
+}
+
+.username{
+    color: rgb(47, 91, 91);
+}
+
+.logo{
+    text-align: center;
+}
+
+/* Show sec */
+
+.createBut{
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.createBut:hover{
+    color: aqua;
+}
+
+
 .showSec {
     margin-top: 30px;
+    margin-bottom: 30px;
     display: grid;
     gap: 16px;
     grid-template-columns: minmax(0, 700px);
@@ -24,7 +66,7 @@ header {
     display: flex;
     flex-direction: column;
     padding: 20px 30px;
-    border: solid 1px rgb(82, 150, 98);
+    border: solid 1px aqua;
     border-radius: 5px;
 }
 
@@ -33,3 +75,22 @@ header {
     font-weight: 500;
 }
 
+
+/* footer sec */
+
+.footer {
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+}
+
+
+@media (max-width: 490px) {
+    .header{
+        flex-direction: column;
+    }
+}

@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
     <title>New Memory</title>
 </head>
 <body>
-    <form action="/new-memory" method="POST">
-        <label for="title">title</label>
-        <input type="text" name="title" placeholder="title" id="title">
-        <label for="content">content</label>
-        <input type="text" name="content" placeholder="please write your memory" id="content">
-        <button type="submit">submit</button>
-    </form>
+    <%- include("partials/header.ejs", {currentUser}) %>
+    <main class="formMain">
+        <form action="/new-memory" method="POST">
+            <label for="title">title</label>
+            <input type="text" name="title" placeholder="title" id="title">
+            <label for="content">content</label>
+            <input type="text" name="content" placeholder="please write your memory" id="content">
+            <button type="submit">submit</button>
+        </form>
+    </main>
+    <%- include("partials/footer.ejs") %>
 </body>
 </html>

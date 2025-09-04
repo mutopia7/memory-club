@@ -1,4 +1,19 @@
-<header>
-    <% if (user) %>
-        <h1 class="logo"></h1>
-</header>
+<% if (currentUser) {%>
+  <header class="header">
+    <h1 class="logo"><a href="/">MEMORY CLUB</a></h1>
+    </h1>
+    <div class="headLinks">
+      <a href="/account">ACCOUNT</a>
+      <a href="/log-out">LOG OUT</a>
+    </div>
+  </header>
+  <% } else { %>
+    <header class="header">
+      <h1 class="logo"><a href="/">MEMORY CLUB</a></h1>
+      <div class="headLinks">
+        <a href="/sign-up">Sign Up</a>
+        <a href="/log-in">Login</a>
+      </div>
+
+    </header>
+  <% } %>
