@@ -98,6 +98,8 @@ router.post("/new-memory", memoryValidator , userController.newMemoryPost);
 router.get("/account", viewController.accountRender);
 router.post("/account", userController.changeRolePost);
 
+router.post("/posts/:id/delete", role.isAdmin, userController.deletePostHandler)
+
 // 404 handler
 router.use((req, res, next) => {
   res.status(404).render("404", { currentUser: req.user });

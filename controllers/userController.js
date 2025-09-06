@@ -57,8 +57,19 @@ async function changeRolePost(req, res, next) {
     }
 }
 
+async function deletePostHandler(req, res, next) {
+    try {
+        const postId = req.params.id;
+        await db.deletePost(postId);
+        res.redirect("/")
+    } catch (err) {
+        return next(err)
+    }
+}
+
 module.exports = {
     signUpPost,
     newMemoryPost,
     changeRolePost,
+    deletePostHandler
 }

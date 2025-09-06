@@ -17,9 +17,14 @@ async function updateUserRole(role, userId) {
     await pool.query("UPDATE users SET role = $1 WHERE id = $2",[role, userId])
 }
 
+async function deletePost(postId) {
+    await pool.query("DELETE FROM posts WHERE id = $1", [postId])
+}
+
 module.exports = {
     getAllPosts,
     createUser,
     createPost,
-    updateUserRole
+    updateUserRole,
+    deletePost
 }

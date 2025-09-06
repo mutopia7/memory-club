@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Page Not Found</title>
+</head>
+<body>
+  <%- include("partials/header.ejs", { currentUser }) %>
+  <main class="formMain" style="text-align: center; padding: 50px;">
+    <h1 style="font-size: 3rem; color: crimson;">401</h1>
+    <h2>Oops! You are Not Allowed</h2>
+    <p>You are not authorized to view this page because you are not ADMIN user, please go back and change your role in account section</p>
+    <a href="/" class="createBut" style="margin-top: 20px;">Back to Home</a>
+  </main>
+  <%- include("partials/footer.ejs") %>
+</body>
+</html>

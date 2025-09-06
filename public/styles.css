@@ -122,6 +122,15 @@ body {
   margin: 4px 0 12px;
 }
 
+.delBtn{
+    background-color: rgb(203, 46, 46);
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
 
 
 /* footer sec */
