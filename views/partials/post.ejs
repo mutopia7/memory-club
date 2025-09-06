@@ -4,7 +4,6 @@
     <p><span class="bold">Author:</span>  <%= post.author %> </p>
     <p><span class="bold">Time:</span> <%= post.created_at.toISOString().slice(11,19)%> At <%= post.created_at.toISOString().slice(0,10)%> </p>
     <form action="/posts/<%= post.id %>/delete" method="POST">
-        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit" class="delBtn">Delete</button>
     </form>
 </div>
