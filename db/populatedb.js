@@ -63,7 +63,7 @@ async function populateDb() {
 
     await client.connect();
 
-    // بررسی اینکه جدول movies پر است یا نه
+    
     try {
         const res = await client.query("SELECT COUNT(*) AS count FROM users");
         if (parseInt(res.rows[0].count) > 0) {

@@ -5,7 +5,9 @@ const helmet = require("helmet");
 const populateDb = require("./db/populatedb")
 require("dotenv").config();
 
-populateDb()
+(async () => {
+  await populateDb();
+})()
 
 const app = express();
 
