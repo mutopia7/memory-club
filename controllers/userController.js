@@ -1,9 +1,10 @@
 const db = require("../db/queries")
 const bcrypt = require("bcryptjs")
-const { body, validationResult } = require("express-validator")
+const { validationResult } = require("express-validator")
 
 
 async function signUpPost(req, res, next) {
+    const { firstname, lastname, username, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         // Convert errors to object { fieldName: "error message" }
@@ -11,11 +12,10 @@ async function signUpPost(req, res, next) {
         errors.array().forEach(err => {
             mappedErrors[err.path] = err.msg;
         })
-        return res.status(400).render("sign-up", { errors: mappedErrors, oldInput: req.body })
+        return res.status(400).render("sign-up", { errors: mappedErrors, oldInput: { firstname, lastname, username } })
     }
 
     try {
-        const { firstname, lastname, username, password } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.createUser(firstname, lastname, username, hashedPassword)
         res.redirect("/")
@@ -25,6 +25,16 @@ async function signUpPost(req, res, next) {
 }
 
 async function newMemoryPost(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        // Convert errors to object { fieldName: "error message" }
+        const mappedErrors = {};
+        errors.array().forEach(err => {
+            mappedErrors[err.path] = err.msg;
+        })
+        return res.status(400).render("new-memory", { errors: mappedErrors, oldInput: req.body })
+    }
+
     try {
         const { title, content } = req.body;
         const user = req.user;

@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
     <title>New Memory</title>
 </head>
+
 <body>
     <%- include("partials/header.ejs", {currentUser}) %>
-    <main class="formMain">
-        <h1>Add Memory</h1>
-        <form action="/new-memory" method="POST" class="form">
-            <label for="title">Title</label>
-            <input type="text" name="title" placeholder="Enter your title" id="title">
-            <label for="content">Content</label>
-            <textarea style="max-height: 30ch;" name="content" placeholder="Please write your memory" id="content"></textarea>
-            <button type="submit" class="subBtn">submit</button>
-        </form>
-    </main>
-    <%- include("partials/footer.ejs") %>
+        <main class="formMain">
+            <h1>Add Memory</h1>
+            <form action="/new-memory" method="POST" class="form">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<%= oldInput ? oldInput.title : '' %>"
+                    placeholder="Enter your title" />
+                <% if (errors && errors.title) { %>
+                    <p class="error">
+                        <%= errors.title %>
+                    </p>
+                <% } %>
+
+                <label for="content">Content</label>
+                <textarea name="content" id="content" style="max-height: 30ch;"
+                    placeholder="Please write your memory"><%= oldInput ? oldInput.content : '' %></textarea>
+                <% if (errors && errors.content) { %>
+                    <p class="error">
+                        <%= errors.content %>
+                    </p>
+                <% } %>
+
+                <button type="submit" class="subBtn">Submit</button>
+            </form>
+        </main>
+        <%- include("partials/footer.ejs") %>
 </body>
+
 </html>

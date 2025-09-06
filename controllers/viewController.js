@@ -7,7 +7,7 @@ async function indexRender(req, res) {
 }
 
 function signUpRender(req, res) {
-    res.render("sign-up")
+    res.render("sign-up", { errors: {}, oldInput: {} })
 }
 
 function logInRender(req, res) {
@@ -15,7 +15,7 @@ function logInRender(req, res) {
 }
 
 function newMemoryRnder(req, res) {
-    res.render("new-memory")
+    res.render("new-memory",{ errors: {}, oldInput: {} })
 }
 
 function accountRender(req, res) {

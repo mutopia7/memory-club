@@ -7,7 +7,8 @@ const passport = require("../config/passport");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("../db/pool");
 const role = require("../middleware/role");
-const signUpValidation = require("../validators/signUpValidation")
+const signUpValidator = require("../validators/signUpValidator");
+const memoryValidator = require("../validators/memoryValidator")
 
 router.use(session({
   store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
@@ -49,10 +50,10 @@ router.use((req, res, next) => {
 router.get("/", viewController.indexRender);
 
 router.get("/sign-up", viewController.signUpRender);
-router.post("/sign-up", signUpValidation ,userController.signUpPost);
+router.post("/sign-up", signUpValidator ,userController.signUpPost);
 
-router.get("/new-memory", role.isAuth, role.isVip, viewController.newMemoryRnder);
-router.post("/new-memory", userController.newMemoryPost);
+router.get("/new-memory", role.isVip, viewController.newMemoryRnder);
+router.post("/new-memory", memoryValidator , userController.newMemoryPost);
 
 router.get("/account", viewController.accountRender);
 router.post("/account", userController.changeRolePost);
