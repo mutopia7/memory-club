@@ -98,5 +98,20 @@ router.post("/new-memory", memoryValidator , userController.newMemoryPost);
 router.get("/account", viewController.accountRender);
 router.post("/account", userController.changeRolePost);
 
+// 404 handler
+router.use((req, res, next) => {
+  res.status(404).render("404", { currentUser: req.user });
+});
+
+// Global error handler
+router.use((err, req, res, next) => {
+  console.error(err.stack); // Server error log
+  res.status(err.status || 500).render("error", {
+    currentUser: req.user,
+    message: err.message || "Something went wrong on the server.",
+    status: err.status || 500
+  });
+});
+
 
 module.exports = router;
