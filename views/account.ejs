@@ -10,11 +10,12 @@
     <%- include("partials/header.ejs", {currentUser}) %>
     <main class="formMain">
         <form action="/account" method="Post" class="form">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label for="role">Change your role:</label>
             <select name="role" id="role">
                 <option value="normal">Normal (You can see every memory with author's name)</option>
                 <option value="vip">VIP (you can create new memory also)</option>
-                <option value="admin">Admin(You can delete every memory that you want except for the first 5 )</option>
+                <option value="admin">Admin(You can delete every memory that you want)</option>
             </select>
             <button type="submit" class="subBtn">Submit</button>
         </form>

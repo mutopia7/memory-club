@@ -65,6 +65,7 @@ body {
 .post {
     display: flex;
     flex-direction: column;
+    max-height: min-content;
     padding: 20px 30px;
     border: solid 1px aqua;
     border-radius: 5px;

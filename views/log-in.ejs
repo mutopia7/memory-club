@@ -19,6 +19,7 @@
   <main class="formMain">
     <h1> Log In</h1>
     <form action="/log-in" method="POST" class="form">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <label for="username">Username</label>
       <input id="username" name="username" placeholder="Enter your username" type="text"
             value="<%= oldInput.username ? oldInput.username : '' %>" />
