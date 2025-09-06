@@ -4,6 +4,7 @@ const router = require("./routes/router")
 const helmet = require("helmet");
 const populateDb = require("./db/populatedb")
 require("dotenv").config();
+const csrf = require("csurf");
 
 (async () => {
   await populateDb();
@@ -20,6 +21,15 @@ app.set("view engine", "ejs");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//Enabling CSRF
+app.use(csrf());
+
+// All views have access to the csrfToken
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+}); 
 
 // serving Static Assets
 app.use(express.static(path.join(__dirname, "public")))

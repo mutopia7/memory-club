@@ -10,7 +10,7 @@ const role = require("../middleware/role");
 const signUpValidator = require("../validators/signUpValidator");
 const memoryValidator = require("../validators/memoryValidator");
 const flash = require("connect-flash");
-const csrf = require("csurf");
+
 
 router.use(session({
   store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
@@ -35,14 +35,7 @@ router.use((req, res, next) => {
   next();
 });
 
-//Enabling CSRF
-router.use(csrf());
 
-// All views have access to the csrfToken
-router.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-}); 
 
 
 router.get("/log-in", viewController.logInRender)
