@@ -48,6 +48,7 @@ async function populateDb() {
     let client;
 
     if (process.env.DATABASE_URL) {
+        console.log("in databse")
         client = new Client({
             connectionString: process.env.DATABASE_URL,
             ssl: { rejectUnauthorized: false }
