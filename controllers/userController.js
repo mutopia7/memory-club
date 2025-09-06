@@ -12,7 +12,7 @@ async function signUpPost(req, res, next) {
         errors.array().forEach(err => {
             mappedErrors[err.path] = err.msg;
         })
-        return res.status(400).render("sign-up", { errors: mappedErrors, oldInput: { firstname, lastname, username } })
+        return res.status(400).render("sign-up", { errors: mappedErrors, oldInput: { firstname, lastname, username }, user: req.user })
     }
 
     try {
@@ -32,7 +32,7 @@ async function newMemoryPost(req, res, next) {
         errors.array().forEach(err => {
             mappedErrors[err.path] = err.msg;
         })
-        return res.status(400).render("new-memory", { errors: mappedErrors, oldInput: req.body })
+        return res.status(400).render("new-memory", { errors: mappedErrors, oldInput: req.body, user: req.user })
     }
 
     try {

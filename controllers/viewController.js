@@ -7,7 +7,7 @@ async function indexRender(req, res) {
 }
 
 function signUpRender(req, res) {
-    res.render("sign-up", { errors: {}, oldInput: {} })
+    res.render("sign-up", { errors: {}, oldInput: {}, user: req.user })
 }
 
 function logInRender(req, res) {
@@ -15,11 +15,11 @@ function logInRender(req, res) {
 }
 
 function newMemoryRender(req, res) {
-    res.render("new-memory",{ errors: {}, oldInput: {} })
+    res.render("new-memory",{ errors: {}, oldInput: {}, user: req.user })
 }
 
 function accountRender(req, res) {
-    res.render("account", {role: req.user.role})
+    res.render("account", {role: req.user.role, user: req.user})
 }
 
 module.exports = {

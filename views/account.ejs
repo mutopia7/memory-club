@@ -7,7 +7,7 @@
     <title><%= currentUser.username %>'s account</title>
 </head>
 <body>
-    <%- include("partials/header.ejs", {currentUser}) %>
+    <%- include("partials/header.ejs", {user}) %>
     <main class="formMain">
         <form action="/account" method="Post" class="form">
             <label for="role">Change your role:</label>

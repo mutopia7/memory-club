@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <%- include("partials/header.ejs", {currentUser}) %>
+    <%- include("partials/header.ejs", {user}) %>
 
-    <% if (currentUser) {%>  
+    <% if (locals.user) {%>  
         <main class="showSec">
             <h2 class="logo">WELCOME BACK <span class="username"> <%= currentUser.username %></span> </h2>
             <div style="text-align: center;"><a href="/new-memory" class="createBut">Create Post</a></div> 

@@ -10,7 +10,7 @@ function isVip(req, res , next) {
     if (req.isAuthenticated() && (req.user.role === 'vip' || req.user.role === 'admin')) {
         next()
     } else {
-        res.status(401).render("notVip.ejs")
+        res.status(401).render("notVip.ejs", {user:req.user})
     }
 }
 
@@ -18,7 +18,7 @@ function isAdmin(req, res , next) {
     if (req.isAuthenticated() && req.user.role === 'admin') {
         next()
     } else {
-        res.status(401).render("notAdmin.ejs")
+        res.status(401).render("notAdmin.ejs", {user: req.user})
     }
 }
 
