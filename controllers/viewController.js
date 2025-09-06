@@ -14,7 +14,7 @@ function logInRender(req, res) {
     res.render("log-in")
 }
 
-function newMemoryRnder(req, res) {
+function newMemoryRender(req, res) {
     res.render("new-memory",{ errors: {}, oldInput: {} })
 }
 
@@ -26,6 +26,6 @@ module.exports = {
     indexRender,
     signUpRender,
     logInRender,
-    newMemoryRnder,
+    newMemoryRender,
     accountRender
 }

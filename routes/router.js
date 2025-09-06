@@ -92,7 +92,7 @@ router.get("/", viewController.indexRender);
 router.get("/sign-up", viewController.signUpRender);
 router.post("/sign-up", signUpValidator ,userController.signUpPost);
 
-router.get("/new-memory", role.isVip, viewController.newMemoryRnder);
+router.get("/new-memory", role.isVip, viewController.newMemoryRender);
 router.post("/new-memory", memoryValidator , userController.newMemoryPost);
 
 router.get("/account", viewController.accountRender);
