@@ -10,7 +10,6 @@
     <%- include("partials/header.ejs", {currentUser}) %>
     <main class="formMain">
         <form action="/account" method="Post" class="form">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label for="role">Change your role:</label>
             <select name="role" id="role">
                 <option value="normal">Normal (You can see every memory with author's name)</option>
