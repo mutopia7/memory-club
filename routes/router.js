@@ -8,7 +8,8 @@ const pgSession = require("connect-pg-simple")(session);
 const pool = require("../db/pool");
 const role = require("../middleware/role");
 const signUpValidator = require("../validators/signUpValidator");
-const memoryValidator = require("../validators/memoryValidator")
+const memoryValidator = require("../validators/memoryValidator");
+const flash = require("connect-flash");
 
 router.use(session({
   store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
@@ -24,12 +25,51 @@ router.use(session({
 }));
 router.use(passport.session());
 
+router.use(flash());
+
+// middleware for easy access to flash on all pages
+router.use((req, res, next) => {
+  res.locals.loginErrors = req.flash("loginErrors")[0] || {};
+  res.locals.oldInput = req.flash("oldInput")[0] || {};
+  next();
+});
+
+
 
 router.get("/log-in", viewController.logInRender)
-router.post("/log-in", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/log-in"
-}))
+// router.post("/log-in", passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/log-in"
+// }))
+router.post("/log-in", (req, res, next) => {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) { return next(err); }
+
+    if (!user) {
+      // Creating Errors Objects for Each Field
+      const errors = {};
+      if (info.message === "Incorrect username") {
+        errors.username = info.message;
+      } else if (info.message === "Incorrect password") {
+        errors.password = info.message;
+      } else {
+        errors.general = info.message;
+      }
+
+      // Save errors and previous username value for the form
+      req.flash("loginErrors", errors);
+      req.flash("oldInput", { username: req.body.username });
+
+      return res.redirect("/log-in");
+    }
+
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect("/");
+    });
+  })(req, res, next);
+});
+
 
 router.get("/log-out", (req, res, next) => {
   req.logout((err) => {

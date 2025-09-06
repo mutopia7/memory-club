@@ -1,8 +1,403 @@
-==== ./public/styles.css ====
+==== ./middleware/role.js ====
+function isAuth(req, res , next) {
+    if (req.isAuthenticated()) {
+        next()
+    } else {
+        res.status(401).json({ msg: `You are not authorized to view this page`})
+    }
+}
+
+function isVip(req, res , next) {
+    if (req.isAuthenticated() && req.user.role === 'vip') {
+        next()
+    } else {
+        res.status(401).json({ msg: `You are not authorized to view this page because you are not vip user, please go back and change your role in account section`})
+    }
+}
+
+function isAdmin(req, res , next) {
+    if (req.isAuthenticated() && req.user.role === 'admin') {
+        next()
+    } else {
+        res.status(401).json({ msg: `You are not authorized to view this page because you are not Admin user, please go back and change your role in account section`})
+    }
+}
+
+module.exports = {
+    isAuth,
+    isVip,
+    isAdmin
+}==== ./config/passport.js ====
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const pool = require("../db/pool")
+const bcrypt = require("bcryptjs")
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+      const user = rows[0];
+
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+      return done(null, user);
+    } catch(err) {
+      return done(err);
+    }
+  })
+);
+
+
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    const user = rows[0];
+
+    done(null, user);
+  } catch(err) {
+    done(err);
+  }
+});
+
+
+module.exports = passport;==== ./public/reset.css ====
+/* Reset styles */
+
+/* Remove default margin and padding from all elements and pseudo-elements */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Include padding and border in element's total width and height */
+}
+
+/* Set base font properties and background color for the html element */
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
+  /* Improve font rendering on WebKit */
+  -moz-osx-font-smoothing: grayscale;
+  /* Improve font rendering on Firefox */
+}
+
+/* Set base styles for body */
 body {
-    background-color: aqua;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  /* Optimize text rendering for speed */
+}
+
+/* Remove default styles from links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Add underline on hover and focus for better accessibility */
+a:hover,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Remove default list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  /* Inherit font styles for consistency */
+}
+
+/* Style form inputs and textareas */
+input,
+textarea {
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5em;
+  resize: vertical;
+  /* Allow vertical resizing only */
+}
+
+/* Make images responsive */
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}==== ./public/styles.css ====
+@import url("reset.css");
+
+body {
+    background-color: aliceblue;
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+}
+
+/* header sec */
+
+.header {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.headLinks {
+    font-weight: 500;
+    font-size: 1.2rem;
+    display: flex;
+    gap: 40px;
+}
+
+
+.headLinks a:hover {
+    color: aqua;
+}
+
+.username {
+    color: rgb(78, 204, 204);
+}
+
+.logo {
+    text-align: center;
+}
+
+/* Show sec */
+
+.createBut {
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.createBut:hover {
+    color: aqua;
+}
+
+
+.showSec {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: minmax(0, 700px);
+    justify-content: center;
+
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    border: solid 1px aqua;
+    border-radius: 5px;
+
+    /* جلوگیری از بیرون زدن متن */
+    word-wrap: break-word;
+    /* نسخه قدیمی‌تر */
+    overflow-wrap: break-word;
+    /* نسخه مدرن */
+    white-space: normal;
+    /* مطمئن میشه متن می‌شکنه */
+}
+
+.bold {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* form sex */
+
+.formMain {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+    gap: 20px;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    gap: 5px;
+}
+
+.form label {
+    font-weight: 500;
+}
+
+.subBtn {
+    background-color: black;
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin: 4px 0 12px;
+}
+
+
+
+/* footer sec */
+
+.footer {
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+}
+
+
+@media (max-width: 490px) {
+    .header {
+        flex-direction: column;
+    }
 }==== ./db/populatedb.js ====
-==== ./db/pool.js ====
+require("dotenv").config();
+const { Client } = require("pg");
+
+const SQL = `
+-- ===== tables =====
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'normal' CHECK (role IN ('normal', 'vip', 'admin'))
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    author VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===== sample data =====
+
+INSERT INTO users (first_name, last_name, username, password, role)
+VALUES
+('Ali', 'Ahmadi', 'ali123', 'hashedpassword1', 'normal'),
+('Sara', 'Rezayi', 'sara_rz', 'hashedpassword2', 'vip'),
+('Admin', 'User', 'admin01', 'hashedpassword3', 'admin')
+ON CONFLICT (username) DO NOTHING;
+
+INSERT INTO posts (user_id, title ,content, author)
+VALUES
+(1, 'sample', 'hey this is my first post', 'Ali'),
+(1, 'count', 'hey, this is my second post😃', 'Ali'),
+(2, 'emotion','Im happy to be here!', 'Sara'),
+(1, 'first car', 'my first car was bmw', 'Ali'),
+(3, 'first love', 'My first love''s name is hana','Admin')
+ON CONFLICT DO NOTHING;
+
+`;
+
+
+
+async function populateDb() {
+    let client;
+
+    if (process.env.DATABASE_URL) {
+        client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: false }
+        });
+    } else {
+        client = new Client({
+            host: process.env.HOST,
+            user: process.env.USER,
+            database: process.env.DATABASE,
+            port: process.env.DB_PORT
+        });
+    }
+
+    await client.connect();
+
+    // بررسی اینکه جدول movies پر است یا نه
+    try {
+        const res = await client.query("SELECT COUNT(*) AS count FROM users");
+        if (parseInt(res.rows[0].count) > 0) {
+            console.log("DB already populated, skipping.");
+            await client.end();
+            return;
+        }
+    } catch (err) {
+        // جدول وجود ندارد یا خطا، ادامه به ایجاد جدول‌ها و داده‌ها
+        console.log("users table not found, populating DB...");
+    }
+
+    try {
+        await client.query(SQL);
+    } catch (err) {
+        console.error("Error populating DB:", err);
+    } finally {
+        await client.end();
+    }
+    console.log("DB populated successfully.");
+}
+
+
+
+
+module.exports = populateDb;==== ./db/pool.js ====
 const { Pool } = require("pg");
 require("dotenv").config();
 
@@ -25,47 +420,494 @@ if (process.env.DATABASE_URL) {
 module.exports = pool;
 
 ==== ./db/queries.js ====
-==== ./controllers/userController.js ====
-==== ./controllers/viewController.js ====
-const indexRender = (req, res) => {
-    res.render("index")
+const pool = require("./pool")
+
+async function getAllPosts() {
+    const { rows } = await pool.query("SELECT * FROM posts")
+    return rows
+}
+
+async function createUser(firstname, lastname, username, password) {
+    await pool.query("INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)", [firstname, lastname, username, password])
+}
+
+async function createPost(user, title, content) {
+    await pool.query("INSERT INTO posts (user_id, title, content, author) VALUES ($1, $2, $3, $4)", [user.id, title, content, user.first_name])    
+}
+
+async function updateUserRole(role, userId) {
+    await pool.query("UPDATE users SET role = $1 WHERE id = $2",[role, userId])
 }
 
 module.exports = {
-    indexRender
-}==== ./views/index.ejs ====
+    getAllPosts,
+    createUser,
+    createPost,
+    updateUserRole
+}==== ./validators/memoryValidator.js ====
+const { body } = require("express-validator");
+
+const memoryValidator = [
+  body("title")
+    .trim()
+    .notEmpty().withMessage("Title is required.")
+    .isLength({ min: 3, max: 100 }).withMessage("Title must be 3–100 characters."),
+
+  body("content")
+    .trim()
+    .notEmpty().withMessage("Content is required.")
+    .isLength({ min: 10 }).withMessage("Content must be at least 10 characters."),
+];
+
+module.exports = memoryValidator;==== ./validators/signUpValidator.js ====
+const { body } = require("express-validator");
+
+const signUpValidation = [
+  // First name
+  body("firstname")
+    .trim()
+    .escape() // Prevent XSS
+    .isAlpha("en-US", { ignore: " -" }) // Letters only (plus spaces or dashes for compound names)
+    .withMessage("First name must only contain letters.")
+    .isLength({ min: 2, max: 20 })
+    .withMessage("First name must be between 2 and 20 characters."),
+
+  // Last name
+  body("lastname")
+    .trim()
+    .escape()
+    .isAlpha("en-US", { ignore: " -" })
+    .withMessage("Last name must only contain letters.")
+    .isLength({ min: 2, max: 20 })
+    .withMessage("Last name must be between 2 and 20 characters."),
+
+  // Username
+  body("username")
+    .trim()
+    .escape()
+    .isAlphanumeric()
+    .withMessage("Username must contain only letters and numbers.")
+    .isLength({ min: 3, max: 15 })
+    .withMessage("Username must be between 3 and 15 characters.")
+    .toLowerCase(), // Usernames are all lowercase.
+
+  // Password
+  body("password")
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long.")
+    .matches(/\d/)
+    .withMessage("Password must contain at least one number.")
+];
+
+module.exports = signUpValidation==== ./controllers/userController.js ====
+const db = require("../db/queries")
+const bcrypt = require("bcryptjs")
+const { validationResult } = require("express-validator")
+
+
+async function signUpPost(req, res, next) {
+    const { firstname, lastname, username, password } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        // Convert errors to object { fieldName: "error message" }
+        const mappedErrors = {};
+        errors.array().forEach(err => {
+            mappedErrors[err.path] = err.msg;
+        })
+        return res.status(400).render("sign-up", { errors: mappedErrors, oldInput: { firstname, lastname, username } })
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.createUser(firstname, lastname, username, hashedPassword)
+        res.redirect("/")
+    } catch (err) {
+        return next(err)
+    }
+}
+
+async function newMemoryPost(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+        // Convert errors to object { fieldName: "error message" }
+        const mappedErrors = {};
+        errors.array().forEach(err => {
+            mappedErrors[err.path] = err.msg;
+        })
+        return res.status(400).render("new-memory", { errors: mappedErrors, oldInput: req.body })
+    }
+
+    try {
+        const { title, content } = req.body;
+        const user = req.user;
+        await db.createPost(user, title, content);
+        res.redirect("/")
+    } catch (err) {
+        return next(err)
+    }
+}
+
+async function changeRolePost(req, res, next) {
+    try {
+        const role = req.body.role;
+        const userId = req.user.id;
+        await db.updateUserRole(role, userId);
+        req.user.role = role;
+        res.redirect("/account")
+    } catch (err) {
+        return next(err)
+    }
+}
+
+module.exports = {
+    signUpPost,
+    newMemoryPost,
+    changeRolePost,
+}==== ./controllers/viewController.js ====
+const db = require("../db/queries")
+
+async function indexRender(req, res) {
+    const posts = await db.getAllPosts();
+    
+    res.render("index", { posts: posts, user: req.user})
+}
+
+function signUpRender(req, res) {
+    res.render("sign-up", { errors: {}, oldInput: {} })
+}
+
+function logInRender(req, res) {
+    res.render("log-in")
+}
+
+function newMemoryRnder(req, res) {
+    res.render("new-memory",{ errors: {}, oldInput: {} })
+}
+
+function accountRender(req, res) {
+    res.render("account", {role: req.user.role})
+}
+
+module.exports = {
+    indexRender,
+    signUpRender,
+    logInRender,
+    newMemoryRnder,
+    accountRender
+}==== ./views/log-in.ejs ====
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Login</title>
+</head>
+
+<body>
+  <header class="header">
+      <h1 class="logo">MEMORY CLUB</h1>
+      <div class="headLinks">
+        <a href="/sign-up">Sign Up</a>
+        <a href="/log-in">Login</a>
+      </div>
+    </header>
+  <main class="formMain">
+    <h1> Log In</h1>
+    <form action="/log-in" method="POST" class="form">
+      <label for="username">Username</label>
+      <input id="username" name="username" placeholder="Enter your username" type="text" />
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" placeholder="Enter your password"/>
+      <button type="submit" class="subBtn">Log In</button>
+    </form>
+  </main>
+  <%- include("partials/footer.ejs") %>
+</body>
+
+</html>==== ./views/new-memory.ejs ====
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>New Memory</title>
+</head>
+
+<body>
+    <%- include("partials/header.ejs", {currentUser}) %>
+        <main class="formMain">
+            <h1>Add Memory</h1>
+            <form action="/new-memory" method="POST" class="form">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<%= oldInput ? oldInput.title : '' %>"
+                    placeholder="Enter your title" />
+                <% if (errors && errors.title) { %>
+                    <p class="error">
+                        <%= errors.title %>
+                    </p>
+                <% } %>
+
+                <label for="content">Content</label>
+                <textarea name="content" id="content" style="max-height: 30ch;"
+                    placeholder="Please write your memory"><%= oldInput ? oldInput.content : '' %></textarea>
+                <% if (errors && errors.content) { %>
+                    <p class="error">
+                        <%= errors.content %>
+                    </p>
+                <% } %>
+
+                <button type="submit" class="subBtn">Submit</button>
+            </form>
+        </main>
+        <%- include("partials/footer.ejs") %>
+</body>
+
+</html>==== ./views/index.ejs ====
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
     <title>Memory club</title>
 </head>
+
 <body>
-    <p>Wellcome to the memoryClub</p>
+    <%- include("partials/header.ejs", {currentUser}) %>
+
+    <% if (currentUser) {%>  
+        <main class="showSec">
+            <h2 class="logo">WELCOME BACK <span class="username"> <%= currentUser.username %></span> </h2>
+            <div style="text-align: center;"><a href="/new-memory" class="createBut">Create Post</a></div> 
+            <% posts.forEach(post=> { %>
+                <%- include('partials/post.ejs', { post: post }) %>
+                    <% }); %>
+        
+        </main>
+        
+
+        <% } else { %>
+            <main class="showSec">
+                <% posts.forEach(post=> { %>
+                    <%- include('partials/post.ejs', { post: post }) %>
+                        <% }); %>
+            </main>
+            <% } %>
+    
+    <%- include("partials/footer.ejs") %>
 </body>
-</html>==== ./routes/router.js ====
+
+</html>==== ./views/account.ejs ====
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title><%= currentUser.username %>'s account</title>
+</head>
+<body>
+    <%- include("partials/header.ejs", {currentUser}) %>
+    <main class="formMain">
+        <form action="/account" method="Post" class="form">
+            <label for="role">Change your role:</label>
+            <select name="role" id="role">
+                <option value="normal">Normal (You can see every memory with author's name)</option>
+                <option value="vip">VIP (you can create new memory also)</option>
+                <option value="admin">Admin(You can delete every memory that you want except for the first 5 )</option>
+            </select>
+            <button type="submit" class="subBtn">Submit</button>
+        </form>
+        <% if (locals.role) { %>
+            <p class="bold">Your currnet role is <%= role %></p>
+        <% } %>
+        <a href="/">Back to Home</a>
+    </main>
+    <%- include("partials/footer.ejs") %>
+</body>
+</html>==== ./views/sign-up.ejs ====
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>Sign Up</title>
+</head>
+
+<body>
+  <%- include("partials/header.ejs", {currentUser}) %>
+    <main class="formMain">
+      <h1>Sign Up</h1>
+
+      <form action="/sign-up" method="POST" class="form">
+      <!-- First Name -->
+      <label for="firstname">First Name</label>
+      <input id="firstname" type="text" name="firstname"
+             value="<%= oldInput ? oldInput.firstname : '' %>" required />
+      <% if (errors && errors.firstname) { %>
+        <p class="error"><%= errors.firstname %></p>
+      <% } %>
+
+      <!-- Last Name -->
+      <label for="lastname">Last Name</label>
+      <input id="lastname" type="text" name="lastname"
+             value="<%= oldInput ? oldInput.lastname : '' %>" required />
+      <% if (errors && errors.lastname) { %>
+        <p class="error"><%= errors.lastname %></p>
+      <% } %>
+
+      <!-- Username -->
+      <label for="username">Username</label>
+      <input id="username" type="text" name="username"
+             value="<%= oldInput ? oldInput.username : '' %>" required />
+      <% if (errors && errors.username) { %>
+        <p class="error"><%= errors.username %></p>
+      <% } %>
+
+      <!-- Password -->
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required />
+      <% if (errors && errors.password) { %>
+        <p class="error"><%= errors.password %></p>
+      <% } %>
+
+      <button type="submit" class="subBtn">Sign Up</button>
+    </form>
+
+
+          <!-- <form action="/sign-up" method="POST" class="form">
+            <label for="firstname">First Name</label>
+            <input id="firstname" type="text" name="firstname" placeholder="Enter your first name" required />
+            <label for="lastname">Last Name</label>
+            <input id="lastname" name="lastname" placeholder="Enter your last name" type="text" required />
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="Enter your username" type="text" required />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter your password" required />
+            <button type="submit" class="subBtn">Sign Up</button>
+          </form> -->
+    </main>
+    <%- include("partials/footer.ejs") %>
+</body>
+
+</html>==== ./views/partials/post.ejs ====
+<div class="post">
+    <p><span class="bold">Title:</span> <%= post.title %></p>
+    <p><span class="bold">Message:</span> <%= post.content %></p>
+    <p><span class="bold">Author:</span>  <%= post.author %> </p>
+    <p><span class="bold">Time:</span> <%= post.created_at.toISOString().slice(11,19)%> At <%= post.created_at.toISOString().slice(0,10)%> </p>
+</div>==== ./views/partials/header.ejs ====
+<% if (currentUser) {%>
+  <header class="header">
+    <h1 class="logo"><a href="/">MEMORY CLUB</a></h1>
+    </h1>
+    <div class="headLinks">
+      <a href="/account">ACCOUNT</a>
+      <a href="/log-out">LOG OUT</a>
+    </div>
+  </header>
+  <% } else { %>
+    <header class="header">
+      <h1 class="logo"><a href="/">MEMORY CLUB</a></h1>
+      <div class="headLinks">
+        <a href="/sign-up">Sign Up</a>
+        <a href="/log-in">Login</a>
+      </div>
+
+    </header>
+  <% } %>==== ./views/partials/footer.ejs ====
+<footer class="footer">
+    <p>Created by <h2 class="creator"><a href="https://github.com/mutopia7" rel="noreferer" target="_blank">RASOOL</a></h2></p>
+</footer>==== ./routes/router.js ====
 const { Router } = require("express");
 const router = Router();
-const userController = require("../controllers/userController")
-const viewController = require("../controllers/viewController")
+const userController = require("../controllers/userController");
+const viewController = require("../controllers/viewController");
+const session = require("express-session");
+const passport = require("../config/passport");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require("../db/pool");
+const role = require("../middleware/role");
+const signUpValidator = require("../validators/signUpValidator");
+const memoryValidator = require("../validators/memoryValidator")
 
-router.get("/", viewController.indexRender)
+router.use(session({
+  store: new pgSession({ pool, tableName: "session", createTableIfMissing: true  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  },
+}));
+router.use(passport.session());
+
+
+router.get("/log-in", viewController.logInRender)
+router.post("/log-in", passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/log-in"
+}))
+
+router.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+router.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
+// routers
+
+router.get("/", viewController.indexRender);
+
+router.get("/sign-up", viewController.signUpRender);
+router.post("/sign-up", signUpValidator ,userController.signUpPost);
+
+router.get("/new-memory", role.isVip, viewController.newMemoryRnder);
+router.post("/new-memory", memoryValidator , userController.newMemoryPost);
+
+router.get("/account", viewController.accountRender);
+router.post("/account", userController.changeRolePost);
+
 
 module.exports = router;==== ./app.js ====
 const express = require("express");
 const path = require("node:path");
 const router = require("./routes/router")
+const helmet = require("helmet");
+const populateDb = require("./db/populatedb")
 require("dotenv").config();
 
+populateDb()
 
 const app = express();
+
+app.use(helmet());
+
 
 // set view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // serving Static Assets
@@ -73,7 +915,7 @@ app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", router)
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Listening on Port ${PORT}`)

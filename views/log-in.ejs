@@ -20,11 +20,25 @@
     <h1> Log In</h1>
     <form action="/log-in" method="POST" class="form">
       <label for="username">Username</label>
-      <input id="username" name="username" placeholder="Enter your username" type="text" />
+      <input id="username" name="username" placeholder="Enter your username" type="text"
+            value="<%= oldInput.username ? oldInput.username : '' %>" />
+      <% if (loginErrors.username) { %>
+        <p class="error"><%= loginErrors.username %></p>
+      <% } %>
+
       <label for="password">Password</label>
       <input id="password" name="password" type="password" placeholder="Enter your password"/>
+      <% if (loginErrors.password) { %>
+        <p class="error"><%= loginErrors.password %></p>
+      <% } %>
+
+      <% if (loginErrors.general) { %>
+        <p class="error"><%= loginErrors.general %></p>
+      <% } %>
+
       <button type="submit" class="subBtn">Log In</button>
     </form>
+
   </main>
   <%- include("partials/footer.ejs") %>
 </body>
