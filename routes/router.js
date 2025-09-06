@@ -42,7 +42,7 @@ router.use(csrf());
 router.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   next();
-});
+}); 
 
 
 router.get("/log-in", viewController.logInRender)
