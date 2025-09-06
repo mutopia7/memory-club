@@ -1,27 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/styles.css">
   <title>Sign Up</title>
 </head>
+
 <body>
   <%- include("partials/header.ejs", {currentUser}) %>
-  <main class="formMain">
-    <h1>Sign Up</h1>
-    <form action="/sign-up" method="POST" class="form">
+    <main class="formMain">
+      <h1>Sign Up</h1>
+
+      <form action="/sign-up" method="POST" class="form">
+      <!-- First Name -->
       <label for="firstname">First Name</label>
-      <input id="firstname" type="text" name="firstname" placeholder="Enter your first name">
+      <input id="firstname" type="text" name="firstname"
+             value="<%= oldInput ? oldInput.firstname : '' %>" required />
+      <% if (errors && errors.firstname) { %>
+        <p class="error"><%= errors.firstname %></p>
+      <% } %>
+
+      <!-- Last Name -->
       <label for="lastname">Last Name</label>
-      <input id="lastname" name="lastname" placeholder="Enter your last name" type="text">
+      <input id="lastname" type="text" name="lastname"
+             value="<%= oldInput ? oldInput.lastname : '' %>" required />
+      <% if (errors && errors.lastname) { %>
+        <p class="error"><%= errors.lastname %></p>
+      <% } %>
+
+      <!-- Username -->
       <label for="username">Username</label>
-      <input id="username" name="username" placeholder="Enter your username" type="text" />
+      <input id="username" type="text" name="username"
+             value="<%= oldInput ? oldInput.username : '' %>" required />
+      <% if (errors && errors.username) { %>
+        <p class="error"><%= errors.username %></p>
+      <% } %>
+
+      <!-- Password -->
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" placeholder="Enter your password" />
+      <input id="password" type="password" name="password" required />
+      <% if (errors && errors.password) { %>
+        <p class="error"><%= errors.password %></p>
+      <% } %>
+
       <button type="submit" class="subBtn">Sign Up</button>
     </form>
-  </main>
-  <%- include("partials/footer.ejs") %>
+
+
+          <!-- <form action="/sign-up" method="POST" class="form">
+            <label for="firstname">First Name</label>
+            <input id="firstname" type="text" name="firstname" placeholder="Enter your first name" required />
+            <label for="lastname">Last Name</label>
+            <input id="lastname" name="lastname" placeholder="Enter your last name" type="text" required />
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="Enter your username" type="text" required />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter your password" required />
+            <button type="submit" class="subBtn">Sign Up</button>
+          </form> -->
+    </main>
+    <%- include("partials/footer.ejs") %>
 </body>
+
 </html>

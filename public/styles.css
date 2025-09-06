@@ -116,6 +116,12 @@ body {
     margin-top: 15px;
 }
 
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin: 4px 0 12px;
+}
+
 
 
 /* footer sec */
