@@ -6,7 +6,7 @@ The application implements authentication, authorization, role-based access cont
 ---
 
 ## Home Page
-![Home Page](https://dazzling-cat-memory-club.up.railway.app/)
+https://dazzling-cat-memory-club.up.railway.app/
 
 ## 🚀 Features
 
