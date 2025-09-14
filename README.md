@@ -6,7 +6,8 @@ The application implements authentication, authorization, role-based access cont
 ---
 
 ## Home Page
-https://dazzling-cat-memory-club.up.railway.app/
+
+Visit here [memory-club](https://memory-club.vercel.app/)
 
 ## 🚀 Features
 
@@ -68,41 +69,6 @@ https://dazzling-cat-memory-club.up.railway.app/
 └── README.md              # This file
 ```
 
----
-
-## 🛠️ Installation & Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/memory-club.git
-   cd memory-club
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**  
-   Create a `.env` file in the root directory with:
-   ```
-   DATABASE_URL=your_postgres_url
-   SESSION_SECRET=your_secret_key
-   NODE_ENV=development
-   ```
-
-4. **Populate the database**
-   ```bash
-   node ./db/populatedb.js
-   ```
-
-5. **Run the application**
-   ```bash
-   npm start
-   ```
-   The app will be running at **http://localhost:5000**
-
----
 
 
 ## 🔮 Future Improvements
